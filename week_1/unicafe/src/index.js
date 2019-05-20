@@ -1,17 +1,24 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Stat = ({text, value}) => (
+    <tr><td>{text}</td><td>{value}{text === 'Positiivisia' ? " %" : ""}</td></tr>
+)
+
+
 const Stats = ({good, neutral, bad}) => {
     if (good + neutral + bad > 0) {
         return (
             <>
                 <h1>Statistiikka</h1>
-                <p>Hyvä {good}</p>
-                <p>Neutraali {neutral}</p>
-                <p>Huono {bad}</p>
-                <p>Yhteensä {good + neutral + bad}</p>
-                <p>Keskiarvo {(good - bad) / (good + neutral + bad)}</p>
-                <p>Positiivisia {100 * good / (good + neutral + bad)}</p>
+                <table><tbody>
+                <Stat text="Hyvä" value={good}/>
+                <Stat text="Neutraali" value={neutral}/>
+                <Stat text="Huono" value={bad}/>
+                <Stat text="Yhteensä" value={good + neutral + bad}/>
+                <Stat text="Keskiarvo" value={(good - bad) / (good + neutral + bad)}/>
+                <Stat text="Positiivisia" value={100 * good / (good + neutral + bad)} /> 
+                </tbody></table>
             </>
         )
     }
@@ -25,6 +32,10 @@ const Stats = ({good, neutral, bad}) => {
     }
 }
 
+const Button = ({fun, name}) => (
+    <button onClick={fun}>{name}</button>
+)
+
 const App = () => {
     // tallenna napit omaan tilaansa
     const [good, setGood] = useState(0)
@@ -34,9 +45,9 @@ const App = () => {
     return (
         <div>
             <h1>Anna palautetta</h1>
-            <button onClick={() => setGood(good + 1)}>Good</button>
-            <button onClick={() => setNeutral(neutral + 1)}>Neutral</button>
-            <button onClick={() => setBad(bad + 1)}>Bad</button>
+            <Button name="Hyvä" fun={() => setGood(good + 1)}/>
+            <Button name="Neutraali" fun={() => setNeutral(neutral + 1)}/>
+            <Button name="Huono" fun={() => setBad(bad + 1)}/>
             <Stats good={good} neutral={neutral} bad={bad} />
         </div>
     )
