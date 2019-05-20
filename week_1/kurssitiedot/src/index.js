@@ -1,23 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = (props) => (
+const Header = props => (
     <h1>{props.content}</h1>
 )
 
-const Part = (props) => (
+const Part = props => (
     <p>{props.name} {props.number}</p>
 )
 
-const Content = (props) => (
+const Content = props => (
     <>
-        {props.names.map((c, i) => {
-            return <Part key={i} name={c} number={props.number[i]}/>
-        })}
+        {props.names.map((c, i) => <Part key={i} name={c} number={props.number[i]}/>)}
     </>
 )
 
-const Footer = (props) => (
+const Footer = props => (
     <p>{props.content}</p>
 )
 
