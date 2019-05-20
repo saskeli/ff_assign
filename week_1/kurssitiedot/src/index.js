@@ -15,32 +15,32 @@ const Content = props => (
     </>
 )
 
-const Footer = props => (
-    <p>{props.content}</p>
+const Total = props => (
+    <p>{"yhteensä " + (props.parts.map(c => c.exercises).reduce((a, b) => a + b)) + " tehtävää"}</p>
 )
 
 const App = () => {
     const course = 'Half Stack -sovelluskehitys'
-    const part1 = {
-        name: 'Reactin perusteet',
-        exercises: 10
-    }
-    const part2 = {
-        name: 'Tiedonvälitys propseilla',
-        exercises: 7
-    }
-    const part3 = {
-        name: 'Komponenttien tila',
-        exercises: 14
-    }
+    const parts = [
+        {
+            name: 'Reactin perusteet',
+            exercises: 10
+        },
+        {
+            name: 'Tiedonvälitys propseilla',
+            exercises: 7
+        },
+        {
+            name: 'Komponenttien tila',
+            exercises: 14
+        }
+    ]
     
-    const parts = [part1, part2, part3]
-
     return (
         <>
             <Header content={course} />
             <Content stuff={parts} />
-            <Footer content={"yhteensä " + (parts.map(c => c.exercises).reduce((a, b) => a + b)) + " tehtävää"} />
+            <Total parts={parts} />
         </>
     )
   }
