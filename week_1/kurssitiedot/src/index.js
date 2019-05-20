@@ -5,10 +5,14 @@ const Header = (props) => (
     <h1>{props.content}</h1>
 )
 
+const Part = (props) => (
+    <p>{props.name} {props.number}</p>
+)
+
 const Content = (props) => (
     <>
         {props.names.map((c, i) => {
-            return <p key={i}>{c} {props.number[i]}</p>
+            return <Part key={i} name={c} number={props.number[i]}/>
         })}
     </>
 )
@@ -27,11 +31,11 @@ const App = () => {
     const exercises3 = 14
   
     return (
-        <div>
+        <>
             <Header content={course} />
             <Content names={[part1, part2, part3]} number={[exercises1, exercises2, exercises3]}/>
             <Footer content={"yhteensä " + (exercises1 + exercises2 + exercises3) + " tehtävää"}/>
-        </div>
+        </>
     )
   }
 
