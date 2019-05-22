@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 
 const Persons = ({plist, fString}) => (
     <>
@@ -35,15 +36,16 @@ const PForm = ({name, naChange, number, nuChange, onSubmit}) => (
 )
 
 const App = () => {
-    const [ persons, setPersons] = useState([
-        { name: 'Arto Hellas', number: '040-123456' },
-        { name: 'Martti Tienari', number: '040-123456' },
-        { name: 'Arto Järvinen', number: '040-123456' },
-        { name: 'Lea Kutvonen', number: '040-123456' }
-    ]) 
+    const [ persons, setPersons] = useState([]) 
     const [ newName, setNewName ] = useState('')
     const [ newNumber, setNewNumber ] = useState("")
     const [ fString, setFilter ] = useState("")
+
+    useEffect(() => {
+        axios
+            .get('http://localhost:3001/persons')
+            .then(response => setPersons(response.data))
+    }, [])
 
     const handleNameChange = event => setNewName(event.target.value)
     const handleNumberChange = event => setNewNumber(event.target.value)
