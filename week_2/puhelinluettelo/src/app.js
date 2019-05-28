@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import people from "./services/people"
 
-const Persons = ({plist, fString}) => (
-    <>
-    {
-        plist.filter(p => {
-            const name = p.name.toLowerCase()
-            const f = fString.toLowerCase()
-            return name.includes(f)
-        }).map(p => <p key={p.name}>{p.name} {p.number}</p>)
+const deller = (p, setter, plist) => () => {
+    if (!window.confirm(`Poistetaanko ${p.name}?`)) {
+        return
     }
-    </>
+    people.removePerson(p.id)
+    setter(plist.filter(o => o.id !== p.id))
+}
+
+const Persons = ({plist, fString, setter}) => (
+    <table><tbody>
+        {
+            plist.filter(p => {
+                const name = p.name.toLowerCase()
+                const f = fString.toLowerCase()
+                return name.includes(f)
+            }).map(p => 
+                <tr key={p.id}>
+                    <td>{p.name}</td>
+                    <td>{p.number}</td>
+                    <td> <button onClick={deller(p, setter, plist)}>poista</button></td>
+                </tr>)
+        }
+    </tbody></table>
 )
 
 const PFilter = ({value, onChange}) => (
@@ -42,9 +55,9 @@ const App = () => {
     const [ fString, setFilter ] = useState("")
 
     useEffect(() => {
-        axios
-            .get('http://localhost:3001/persons')
-            .then(response => setPersons(response.data))
+        people.getAll()
+            .then(plist => setPersons(plist))
+            .catch(error => alert("Henkilöiden hakeminen epäonnistui!"))
     }, [])
 
     const handleNameChange = event => setNewName(event.target.value)
@@ -53,11 +66,23 @@ const App = () => {
 
     const addPerson = event => {
         event.preventDefault()
-        if (persons.some(p => p.name === newName)) {
-            alert(`${newName} on jo olemassa!`)
+        const p = persons.find(p => p.name === newName)
+        if (p) {
+            if (window.confirm(`${newName} on jo olemassa! Päivitetäänkö numero?`)) {
+                const np = {...p, number: newNumber}
+                people.updateNumber(p.id, np)
+                    .then(updatedPerson => setPersons(persons.map(pm => pm.id === p.id ? updatedPerson : pm)))
+                    .catch(error => setPersons(persons.filter(pm => pm.id !== p.id)))
+            }            
         }
         else {
-            setPersons(persons.concat({name: newName, number: newNumber}))
+            const person = {
+                name: newName,
+                number: newNumber
+            }
+            people.postNew(person)
+                .then(person => setPersons(persons.concat(person)))
+                .catch(error => alert("Lisääminen epäonnistui!"))
         }
     }
 
@@ -72,7 +97,7 @@ const App = () => {
                 onSubmit={addPerson}
             />
             <h3>Numerot</h3>
-            <Persons plist={persons} fString={fString} />
+            <Persons plist={persons} fString={fString} setter={setPersons}/>
         </div>
     )
 }
