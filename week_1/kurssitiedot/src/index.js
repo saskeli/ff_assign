@@ -1,50 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = props => (
-    <h1>{props.content}</h1>
-)
+const Header = ({name}) => <h1>{name}</h1>
 
-const Part = props => (
-    <p>{props.thing.name} {props.thing.exercises}</p>
-)
+const Part = ({name, exercises}) => <p>{name} {exercises}</p>
 
-const Content = props => (
-    <>
-        {props.stuff.map((c, i) => <Part key={i} thing={c}/>)}
-    </>
-)
+const Content = ({parts}) => <>
+    {parts.map(c => <Part name={c.name} exercises={c.exercises} />)}
+</>
 
-const Total = props => (
-    <p>{"yhteensä " + (props.parts.map(c => c.exercises).reduce((a, b) => a + b)) + " tehtävää"}</p>
-)
+const Total = ({counts}) => <p>
+    Number of exercises {counts.reduce((a, b) => a + b, 0)}
+</p>
 
 const App = () => {
     const course = {
-        name: 'Half Stack -sovelluskehitys',
+        name: 'Half Stack application development',
         parts: [
-          {
-            name: 'Reactin perusteet',
-            exercises: 10
-          },
-          {
-            name: 'Tiedonvälitys propseilla',
-            exercises: 7
-          },
-          {
-            name: 'Komponenttien tila',
-            exercises: 14
-          }
+            {name: 'Fundamentals of React', exercises: 10},
+            {name: 'Using props to pass data', exercises: 7},
+            {name: 'State of a component', exercises: 14}
         ]
-      }
+    }
     
     return (
-        <>
-            <Header content={course.name} />
-            <Content stuff={course.parts} />
-            <Total parts={course.parts} />
-        </>
+        <div>
+            <Header name={course.name} />
+            <Content parts={course.parts} />
+            <Total counts={course.parts.map(x => x.exercises)} />
+        </div>
     )
-  }
+}
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+);

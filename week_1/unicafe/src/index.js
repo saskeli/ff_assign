@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Stat = ({text, value}) => (
-    <tr><td>{text}</td><td>{value}{text === 'Positiivisia' ? " %" : ""}</td></tr>
-)
+const Stat = ({text, value}) => 
+    <tr><td>{text}</td><td>{value}</td></tr>
 
 
 const Stats = ({good, neutral, bad}) => {
@@ -12,32 +11,27 @@ const Stats = ({good, neutral, bad}) => {
             <>
                 <h1>Statistiikka</h1>
                 <table><tbody>
-                <Stat text="Hyvä" value={good}/>
-                <Stat text="Neutraali" value={neutral}/>
-                <Stat text="Huono" value={bad}/>
-                <Stat text="Yhteensä" value={good + neutral + bad}/>
-                <Stat text="Keskiarvo" value={(good - bad) / (good + neutral + bad)}/>
-                <Stat text="Positiivisia" value={100 * good / (good + neutral + bad)} /> 
+                <Stat text="Hyvä" value={`${good}`}/>
+                <Stat text="Neutraali" value={`${neutral}`}/>
+                <Stat text="Huono" value={`${bad}`}/>
+                <Stat text="Yhteensä" value={`${good + neutral + bad}`}/>
+                <Stat text="Keskiarvo" value={((good - bad) / (good + neutral + bad)).toFixed(2)}/>
+                <Stat text="Positiivisia" value={`${(100 * good / (good + neutral + bad)).toFixed(2)} %`} /> 
                 </tbody></table>
             </>
         )
     }
-    else {
-        return (
-            <>
-                <h1>Statistiikka</h1>
-                <p>Ei yhtään palautetta annettu</p>
-            </>
-        )
-    }
+    return (
+        <>
+            <h1>Statistiikka</h1>
+            <p>Ei yhtään palautetta annettu</p>
+        </>
+    )
 }
 
-const Button = ({fun, name}) => (
-    <button onClick={fun}>{name}</button>
-)
+const Button = ({fun, name}) => <button onClick={fun}>{name}</button>
 
 const App = () => {
-    // tallenna napit omaan tilaansa
     const [good, setGood] = useState(0)
     const [neutral, setNeutral] = useState(0)
     const [bad, setBad] = useState(0)
