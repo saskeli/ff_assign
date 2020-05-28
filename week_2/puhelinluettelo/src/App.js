@@ -7,7 +7,7 @@ const Person = ({name, number}) => <tr><td>{name}</td><td>{number}</td></tr>
 
 const Numbers = ({people, filterString}) => {
     const toShow = people.filter(p => 
-        `${p.name.toLowerCase()} ${p.number.toLowerCase()}`.includes(filterString))
+        `${p.name.toLowerCase()} ${p.number.toLowerCase()}`.includes(filterString.toLowerCase()))
     return (<>
         <h2>Numbers</h2>
         <table><tbody>
