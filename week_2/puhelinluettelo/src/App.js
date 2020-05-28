@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const changeHandlerFactory = (fn) => (event) => fn(event.target.value)
 
@@ -43,6 +44,11 @@ const App = () => {
             setPersons(nper)
         }
     }
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/persons')
+            .then(response => setPersons(response.data))
+    }, [])
 
     return (
         <div>
