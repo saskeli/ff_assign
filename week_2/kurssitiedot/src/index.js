@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Course from "./course";
+import Course from "./components/course";
 
 const App = () => {
     const courses = [
@@ -22,6 +22,11 @@ const App = () => {
                     name: 'Komponenttien tila',
                     exercises: 14,
                     id: 3
+                },
+                {
+                    name: 'Redux',
+                    exercises: 11,
+                    id: 4
                 }
             ]
         },
@@ -44,10 +49,10 @@ const App = () => {
     ]
   
     return (
-        <>
-            <h1>Kussei</h1>
-            {courses.map((c, i) => <Course key={c.id} course={c}/>)}
-        </>
+        <div>
+            <h1>Kurssei</h1>
+            {courses.map(c => <Course key={c.id} course={c}/>)}
+        </div>
     )
   }
 
