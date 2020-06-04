@@ -1,0 +1,18 @@
+body {
+    background: #caccaa;
+    text-shadow: 1px 1px #ffffff;
+}
+
+tbody tr:nth-child(odd){
+    background-color: #caaacc;
+}
+
+.error {
+    color: red;
+    background-color: lightpink;
+}
+
+.success {
+    color: darkgreen;
+    background-color: lightgreen;
+}
